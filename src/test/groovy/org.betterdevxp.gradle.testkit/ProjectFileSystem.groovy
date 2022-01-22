@@ -2,27 +2,27 @@ package org.betterdevxp.gradle.testkit
 
 trait ProjectFileSystem {
 
-	TestFile projectDir = new TestFile("build/gradlePluginTestOutputDir/${UUID.randomUUID()}")
+    TestFile projectDir = new TestFile("build/gradlePluginTestOutputDir/${UUID.randomUUID()}")
 
-	TestFile projectFile(String path) {
-		new TestFile(projectDir, path)
-	}
+    TestFile projectFile(String path) {
+        new TestFile(projectDir, path)
+    }
 
-	TestFile getBuildDir() {
-		projectFile("build")
-	}
+    TestFile getBuildDir() {
+        projectFile("build")
+    }
 
-	TestFile getBuildFile() {
-		projectFile("build.gradle")
-	}
+    TestFile getBuildFile() {
+        projectFile("build.gradle")
+    }
 
-	TestFile getGradlePropertiesFile() {
-		projectFile("gradle.properties")
-	}
+    TestFile getGradlePropertiesFile() {
+        projectFile("gradle.properties")
+    }
 
-	TestFile getSettingsFile() {
-		projectFile("settings.gradle")
-	}
+    TestFile getSettingsFile() {
+        projectFile("settings.gradle")
+    }
 
 }
 
