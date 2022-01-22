@@ -179,38 +179,4 @@ class SharedTestUtils {
         notThrown(Exception)
     }
 
-    def "should automatically run component tests but not other test sets as part of check"() {
-        given: "a component test that prints a string"
-        projectFile("src/componentTest/groovy/ComponentTest.groovy") << """
-class ComponentTest extends spock.lang.Specification {
-    def "component test"() {
-        when:
-        println "run component test"
-        
-        then:
-        true
-    }
-}
-"""
-        and: "an integration test that prints a string"
-        projectFile("src/integrationTest/groovy/IntegrationTest.groovy") << """
-class IntegrationTest extends spock.lang.Specification {
-    def "integration test"() {
-        when:
-        printLine "run integration test"
-        
-        then:
-        true
-    }
-}
-"""
-
-        when:
-        BuildResult result = run("check")
-
-        then: "only the component test should have executed"
-        assert result.output.contains("run component test")
-        assert result.output.contains("run integration test") == false
-    }
-
 }
