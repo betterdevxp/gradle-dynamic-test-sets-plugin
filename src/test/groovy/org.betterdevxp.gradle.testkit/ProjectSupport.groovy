@@ -47,4 +47,8 @@ trait ProjectSupport extends ProjectFileSystem {
         project.evaluate()
     }
 
+    void applyPlugin(Class type) {
+        project.plugins.apply(type)
+    }
+
 }

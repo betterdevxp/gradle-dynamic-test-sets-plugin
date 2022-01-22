@@ -5,8 +5,8 @@ import spock.lang.Specification
 
 class DynamicTestSetsPluginSpec extends Specification implements ProjectSupport {
 
-    private void applyPlugin() {
-        project.plugins.apply(DynamicTestSetsPlugin.class)
+    void applyDynamicTestSetsPlugin() {
+        applyPlugin(DynamicTestSetsPlugin)
     }
 
     private void createSrcDirs(String... names) {
@@ -18,7 +18,7 @@ class DynamicTestSetsPluginSpec extends Specification implements ProjectSupport 
     def "should automatically run component tests but not other test sets as part of check, by default"() {
         given:
         createSrcDirs("componentTest", "integrationTest")
-        applyPlugin()
+        applyDynamicTestSetsPlugin()
 
         when:
         evaluateProject()
@@ -31,7 +31,7 @@ class DynamicTestSetsPluginSpec extends Specification implements ProjectSupport 
     def "should automatically run tasks defined in commitStageTestTaskNames extension"() {
         given:
         createSrcDirs("componentTest", "integrationTest", "functionalTest")
-        applyPlugin()
+        applyDynamicTestSetsPlugin()
 
         and:
         project.extensions.findByType(DynamicTestSetsExtension).commitStageTestTaskNames = ["integrationTest", "functionalTest"]
@@ -48,7 +48,7 @@ class DynamicTestSetsPluginSpec extends Specification implements ProjectSupport 
     def "should configure test order according to extension"() {
         given:
         createSrcDirs("componentTest", "intTest", "functionalTest")
-        applyPlugin()
+        applyDynamicTestSetsPlugin()
 
         and:
         project.extensions.findByType(DynamicTestSetsExtension).standardTestTaskOrder = ["test", "functionalTest", "intTest"]
