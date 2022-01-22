@@ -2,7 +2,12 @@ package org.betterdevxp.gradle.testkit
 
 trait ProjectFileSystem {
 
-    TestFile projectDir = new TestFile("build/gradlePluginTestOutputDir/${UUID.randomUUID()}")
+    private TestFile theProjectDir = new TestFile("build/gradlePluginTestOutputDir/${UUID.randomUUID()}")
+
+    TestFile getProjectDir() {
+        theProjectDir.mkdirs()
+        theProjectDir
+    }
 
     TestFile projectFile(String path) {
         new TestFile(projectDir, path)

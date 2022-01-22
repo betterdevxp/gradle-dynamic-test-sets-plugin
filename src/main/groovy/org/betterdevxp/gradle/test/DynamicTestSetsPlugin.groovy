@@ -4,8 +4,10 @@ import org.betterdevxp.gradle.api.SourceSetAccessor
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.UnknownTaskException
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskProvider
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
 
 class DynamicTestSetsPlugin implements Plugin<Project>, SourceSetAccessor {
@@ -86,14 +88,12 @@ class DynamicTestSetsPlugin implements Plugin<Project>, SourceSetAccessor {
 
     private void configureTestTaskOrderAndCommitStageDependencies() {
         project.afterEvaluate {
-            List<Task> standardTestTaskOrderTasks = extension.standardTestTaskOrder.collect {
-                project.tasks.findByName(it)
-            }.findAll {
-                it != null
-            }
+            List<TaskProvider<Task>> standardTestTaskOrderTasks = getStandardTestTaskProviders()
             for (int i = standardTestTaskOrderTasks.size() - 1; i > 0; i--) {
-                standardTestTaskOrderTasks[0 .. i - 1].each {
-                    standardTestTaskOrderTasks[i].mustRunAfter(it)
+                standardTestTaskOrderTasks[0..i - 1].each { TaskProvider<Task> provider ->
+                    standardTestTaskOrderTasks[i].configure {
+                        mustRunAfter(provider)
+                    }
                 }
             }
 
@@ -106,6 +106,19 @@ class DynamicTestSetsPlugin implements Plugin<Project>, SourceSetAccessor {
                 }
             }
         }
+    }
+
+    private List<TaskProvider<Task>> getStandardTestTaskProviders() {
+        List<TaskProvider<Task>> standardTestTaskOrderTasks = extension.standardTestTaskOrder.collect {
+            try {
+                return project.tasks.named(it)
+            } catch (UnknownTaskException ex) {
+                return null
+            }
+        }.findAll {
+            it != null
+        }
+        standardTestTaskOrderTasks
     }
 
 }

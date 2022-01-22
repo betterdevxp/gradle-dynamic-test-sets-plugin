@@ -23,7 +23,7 @@ dependencies {
     sharedTestApi 'org.spockframework:spock-core:1.3-groovy-2.5'
 }
 
-project.tasks.withType(Test) {
+project.tasks.withType(Test).configureEach {
     // allows us to assert against test output
     testLogging.showStandardStreams = true
 }
@@ -177,6 +177,31 @@ class SharedTestUtils {
 
         then:
         notThrown(Exception)
+    }
+
+    def "should not eagerly create test tasks"() {
+        given:
+        String realizedTestTaskPrefix = "TEST TASK"
+        // not sure of a better way to test this... ideally, could determine whether the task has been realized in a
+        // unit test but haven't been able to figure that out
+        buildFile << """
+project.tasks.withType(Test).configureEach {
+    println "${realizedTestTaskPrefix} - \${it}"
+}
+
+task nonTestTask {}
+"""
+
+        and:
+        projectFile("src/functionalTest/groovy/SomeTest.groovy") << """
+class SomeTest {}
+"""
+
+        when:
+        BuildResult result = run("nonTestTask")
+
+        then:
+        assert result.output.contains(realizedTestTaskPrefix) == false
     }
 
 }

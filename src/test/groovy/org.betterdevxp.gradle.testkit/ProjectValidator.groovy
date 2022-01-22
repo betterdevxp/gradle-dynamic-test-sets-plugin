@@ -3,6 +3,7 @@ package org.betterdevxp.gradle.testkit
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.internal.tasks.DefaultTaskDependency
+import org.gradle.api.tasks.TaskProvider
 
 class ProjectValidator {
 
@@ -65,6 +66,8 @@ class ProjectValidator {
             if (it instanceof String) {
                 return it
             } else if (it instanceof Task) {
+                return it.name
+            } else if (it instanceof TaskProvider) {
                 return it.name
             } else {
                 throw new IllegalStateException("Unknown value=${it} of type=${it.class}")
