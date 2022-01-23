@@ -4,9 +4,7 @@ import org.betterdevxp.gradle.api.SourceSetAccessor
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.artifacts.Dependency
 import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
 
@@ -43,7 +41,7 @@ class DynamicTestSetsPlugin implements Plugin<Project>, SourceSetAccessor {
 
     private List<String> getAvailableTestSetNames() {
         List<String> availableTestSetNames = []
-        // imports the shared and published test set libraries to the 'test' test set - https://github.com/unbroken-dome/gradle-testsets-plugin#predefined-unit-test-set
+        // imports the shared test set libraries to the 'test' test set - https://github.com/unbroken-dome/gradle-testsets-plugin#predefined-unit-test-set
         availableTestSetNames.add("unitTest")
         project.file("src").listFiles({ File file ->
             file.isDirectory() && file.name.endsWith("Test")
