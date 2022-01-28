@@ -65,9 +65,7 @@ class ProjectValidator {
         List<String> mustRunAfterTaskNames = (task.getMustRunAfter() as DefaultTaskDependency).getMutableValues().collect {
             if (it instanceof String) {
                 return it
-            } else if (it instanceof Task) {
-                return it.name
-            } else if (it instanceof TaskProvider) {
+            } else if (it instanceof Task || it instanceof TaskProvider) {
                 return it.name
             } else {
                 throw new IllegalStateException("Unknown value=${it} of type=${it.class}")
