@@ -4,6 +4,7 @@ plugins {
     id("idea")
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.16.0"
+    kotlin("jvm")
 }
 
 repositories {
@@ -13,6 +14,7 @@ repositories {
 
 dependencies {
     api("org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:4.0.0")
+    implementation(kotlin("stdlib-jdk8"))
     testImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
 }
 
@@ -36,4 +38,8 @@ gradlePlugin {
             implementationClass = "org.betterdevxp.gradle.test.DynamicTestSetsPlugin"
         }
     }
+}
+
+kotlin {
+    jvmToolchain(11)
 }
