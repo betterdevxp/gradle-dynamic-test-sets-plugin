@@ -5,6 +5,7 @@ import org.gradle.api.*
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
+import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
 import org.unbrokendome.gradle.plugins.testsets.dsl.TestLibrary
 import org.unbrokendome.gradle.plugins.testsets.dsl.testSets
 import java.io.FileFilter
@@ -14,10 +15,13 @@ class DynamicTestSetsPlugin: Plugin<Project>, SourceSetAccessor {
     override lateinit var project: Project
         private set
     private lateinit var extension: DynamicTestSetsExtension
+        private set
 
     override fun apply(project: Project) {
         this.project = project
         this.extension = project.extensions.create(DynamicTestSetsExtension.NAME, DynamicTestSetsExtension::class.java)
+
+        project.pluginManager.apply(TestSetsPlugin::class.java)
 
         configureDynamicTestSets()
         configureTestTaskOrderAndCommitStageDependencies()
