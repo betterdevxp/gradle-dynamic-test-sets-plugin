@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    api("org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:4.0.0")
+    api("org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:4.1.0")
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
 }
@@ -38,6 +38,10 @@ gradlePlugin {
             implementationClass = "org.betterdevxp.gradle.test.DynamicTestSetsPlugin"
         }
     }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 kotlin {

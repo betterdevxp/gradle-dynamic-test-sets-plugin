@@ -63,7 +63,7 @@ class SomeTest extends spock.lang.Specification {
         given: "existence of componentTest directory should create the componentTestCompile configuration"
         buildFile << """
 dependencies {
-    componentTestCompile "com.google.guava:guava:26.0-jre"
+    componentTestImplementation "com.google.guava:guava:26.0-jre"
 }
 """
         and: "class defined in the dynamically added configuration should have access to declared dependencies"
@@ -136,7 +136,7 @@ class SomeTest extends spock.lang.Specification {
         given:
         buildFile << """
 dependencies {
-    compile "com.google.guava:guava:26.0-jre"
+    implementation "com.google.guava:guava:26.0-jre"
 }
 """
         projectFile("src/sharedTest/groovy/SharedTestUtils.groovy") << """
